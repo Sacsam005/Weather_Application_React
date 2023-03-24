@@ -1,70 +1,29 @@
-# Getting Started with Create React App
+# WeatherCast - Find the weather forecast across the globe
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+WeatherCast is a web-based weather forecasting application created using reactJS from scratch. It provides up-to-date weather information from all over the world, thanks to the [OpenWeatherMap](https://openweathermap.org/) API.
 
-## Available Scripts
+### A big shout out to [OpenWeatherMap](https://openweathermap.org/) for this free and easy to use API.
 
-In the project directory, you can run:
+List of OpenWeatherMap APIs used:
 
-### `npm start`
+- [Current weather data](https://openweathermap.org/current)
+- [Air Pollution API](https://openweathermap.org/api/air-pollution)
+- [5 day / 3 hour forecast data](https://openweathermap.org/forecast5)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Things that can be considered for future iterations:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- Work with Google's JavaScript MAP API and places API to enhance and take this to next level. Tried getting the API_KEY from google but failed :(.
 
-### `npm test`
+Developer's note:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- I understand the importance of clean, well-organized code, and while this implementation is currently effective and efficient, there is always room for improvement. However, I acknowledge that the code could benefit from some organization and refactoring.
 
-### `npm run build`
+[Live Here](https://weathercastrjs.netlify.app/)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Cloning and Modifying a Project
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Open a terminal window on your computer.
+- Navigate to the directory where you want to clone the project.
+- Clone the project using the following command:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### `git clone <this repository-url>`
