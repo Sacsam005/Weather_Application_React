@@ -1,8 +1,8 @@
 /* ------------------------------------------------------------------------ */
 // Calculate visibility, dew point, heat index, air quality index...
 export class calculateWeatherFactors {
-  constructor(amount, temperature, humidity, windDegree, cloudiness) {
-    this.amount = amount;
+  constructor(visibility, temperature, humidity, windDegree, cloudiness) {
+    this.visibility = visibility;
     this.temperature = temperature;
     this.humidity = humidity;
     this.windDegree = windDegree;
@@ -10,12 +10,12 @@ export class calculateWeatherFactors {
   }
 
   getVisibility = () => {
-    const amountInKilometers = this.amount / 1000;
-    const amountInMiles = this.amount / 1000 / 1.609344;
+    const amountInKilometers = this.visibility / 1000;
+    const amountInMiles = this.visibility / 1000 / 1.609344;
     const visibilityInKilometers = `${parseFloat(amountInKilometers).toFixed(
       2
-    )} kms`;
-    const visibilityInMiles = `${parseFloat(amountInMiles).toFixed(2)} mi`;
+    )} kms.`;
+    const visibilityInMiles = `${parseFloat(amountInMiles).toFixed(2)} mi.`;
 
     let visibilityTextLabel;
     if (visibilityInMiles < 6 || visibilityInKilometers < 10) {
@@ -147,7 +147,7 @@ export class calculateWeatherFactors {
     } else {
       cloudinessTextLabel = "Overcast skies.";
     }
-    return { cloudiness: `Cloudiness: ${cloudiness}%`, cloudinessTextLabel };
+    return { cloudiness: `${cloudiness}%.`, cloudinessTextLabel };
   };
 }
 // };
@@ -258,10 +258,10 @@ export const convertTemperature = (temperature) => {
 
 // Convert speed from mph to kph or vice versa
 export const convertSpeed = (speed) => {
-  let speedInKilometers = (speed * 1.609).toFixed(2);
-  let speedInMiles = (speed / 1.609).toFixed(2);
+  let speedInKilometers = (parseFloat(speed) * 1.609).toFixed(2);
+  let speedInMiles = (parseFloat(speed) / 1.609).toFixed(2);
   return {
-    speedInMiles: `${speedInMiles} mph`,
-    speedInKilometers: `${speedInKilometers} kmph`,
+    speedInMiles: `${speedInMiles} mph.`,
+    speedInKilometers: `${speedInKilometers} kmph.`,
   };
 };

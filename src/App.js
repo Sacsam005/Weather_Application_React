@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import Header from "./components/Header";
-import WeatherDashboardWithAllProps from "./components/WeatherDashboard";
-import Footer from "./components/Footer";
+import Header from "./Components/Header";
+import WeatherDashboardWithAllProps from "./Components/WeatherDashboard";
+import Footer from "./Components/Footer";
 
 const App = () => {
   // Toggle theme from dark to light and vice versa

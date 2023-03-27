@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "../App.css";
-import WeatherForecast from "./WeatherForecast";
-import Top5NearByCities from "./WeatherCities";
 import {
   calculateWeatherFactors,
   getLabelsColorChanged,
-  convertTemperature,
-  convertSpeed,
   calculateAirQualityIndex,
-} from "./WeatherClass";
+} from "./Dashboard Components/Class";
+import WeatherDashLeftPanel from "./Dashboard Components/WeatherDashLeftPanel";
+import WeatherDashRightPanel from "./Dashboard Components/WeatherDashRightPanel";
 
 const WeatherDashboardWithAllProps = (props) => {
   const [cityInputTerm, setCityInputTerm] = useState("");
@@ -61,12 +59,14 @@ const WeatherDashboardWithAllProps = (props) => {
 
   let apiUrl = "";
   let unit = "metric";
-  async function getWeatherData(cityInput) {
+  async function getWeatherData(cityInput, zipCode) {
     if (cityInput) {
       apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${cityInput}&limit=5&appid=${cipher}&units=${unit}`;
-      if (cityInput === "undefined") {
+      if (cityInput === "404" || cityInput === "undefined") {
         alert("Sorry, the city you entered could not be found :(");
       }
+    } else if (zipCode) {
+      apiUrl = `https://api.openweathermap.org/data/2.5/weather?zip=${zipCode}&appid=${cipher}`;
     } else {
       // Getting initial random city
       const cityListResponse = await fetch(
@@ -80,6 +80,11 @@ const WeatherDashboardWithAllProps = (props) => {
     try {
       const response = await fetch(`${apiUrl}`);
       const data = await response.json();
+      if (data.cod === "404") {
+        alert("Sorry, the city you entered could not be found :(");
+        // window.location.reload();
+        return;
+      }
       setIsLoading(false);
       setCitiesData(data);
 
@@ -126,7 +131,7 @@ const WeatherDashboardWithAllProps = (props) => {
       let pressureTextLabel;
       let pressureInHg = `${(
         data.list[0].main.pressure * 0.0295299830714
-      ).toFixed(2)} inHg`;
+      ).toFixed(2)} inHg.`;
       pressureInHg >= 30 && pressureInHg <= 31
         ? (pressureTextLabel = "The current pressure is around the average.")
         : pressureInHg > 31
@@ -212,379 +217,33 @@ const WeatherDashboardWithAllProps = (props) => {
               isDarkMode ? "dark_mode" : "light_mode"
             }`}
           >
-            <div className="weather_container_left_panel p-2">
-              <div className="weather_container_top_section d-block">
-                <div className="weather_title_div">
-                  <h1 style={{ fontWeight: 900 }}>Weather Dashboard</h1>
-                  <button
-                    className="dark_mode_button border-0 rounded-0 mt-2"
-                    style={{
-                      boxShadow: "rgba(155, 154, 154, 0.6) 0px 2px 8px 0px",
-                      fontWeight: 900,
-                    }}
-                    onClick={() => setIsDarkMode(!isDarkMode)}
-                  >
-                    {isDarkMode ? "Light Mode" : "Dark Mode"}
-                  </button>
-                </div>
-                <div className="weather_props_units_button_div">
-                  <button
-                    className="metrics_unit_button border-0 rounded-0 mt-2"
-                    style={{
-                      boxShadow: "rgba(155, 154, 154, 0.6) 0px 2px 8px 0px",
-                      fontWeight: 900,
-                      opacity: `${isMetricActive ? "0.5" : "1"}`,
-                    }}
-                    onClick={() => handleUnitChange("C")}
-                  >
-                    Metric
-                  </button>
-                  <button
-                    className="imperial_unit_button border-0 rounded-0 mt-2"
-                    style={{
-                      boxShadow: "rgba(155, 154, 154, 0.6) 0px 2px 8px 0px",
-                      fontWeight: 900,
-                      opacity: `${isMetricActive ? "1" : "0.5"}`,
-                    }}
-                    onClick={() => handleUnitChange("F")}
-                  >
-                    Imperial
-                  </button>
-                </div>
-              </div>
-              <div className="weather_container_time_and_input_div my-2">
-                <p data-time-stamp style={{ fontWeight: 900, marginBottom: 0 }}>
-                  {currentTime}
-                </p>
-                <input
-                  type="text"
-                  placeholder="Search for city"
-                  value={cityInputTerm}
-                  onChange={(e) => setCityInputTerm(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.keyCode === 13) {
-                      getWeatherData(cityInputTerm);
-                    }
-                  }}
-                />
-              </div>
-              <div className="weather_city_and_country_div d-block">
-                <h3 data-city>{citiesData.city.name}</h3>
-                <p data-country className="label">
-                  Country: {citiesData.city.country}
-                </p>
-              </div>
-              <div className="weather_temperature_data_div">
-                <h1 data-current-temperature className="label mb-0">
-                  {units === "C"
-                    ? `${citiesData.list[0].main.temp} °C`
-                    : `${
-                        convertTemperature(citiesData.list[0].main.temp)
-                          .tempInFahrenheit
-                      }
-                °F`}
-                </h1>
-                <img
-                  src={`https://openweathermap.org/img/wn/${citiesData.list[0].weather[0].icon}@2x.png`}
-                  alt="Weather"
-                  width="100px"
-                  height="100px"
-                  data-image-url
-                />
-                <p
-                  data-weather-type
-                  className="label mb-1"
-                  style={{ fontWeight: 700 }}
-                >
-                  {citiesData.list[0].weather[0].main}-
-                  {citiesData.list[0].weather[0].description}
-                </p>
-                <p data-max-temp className="label mb-0">
-                  Max:{" "}
-                  {units === "C"
-                    ? `${citiesData.list[0].main.temp_max} °C`
-                    : `${
-                        convertTemperature(citiesData.list[0].main.temp_max)
-                          .tempInFahrenheit
-                      }
-                °F`}
-                </p>
-                <p data-min-temp className="label mb-0">
-                  Min:{" "}
-                  {units === "C"
-                    ? `${citiesData.list[0].main.temp_min} °C`
-                    : `${
-                        convertTemperature(citiesData.list[0].main.temp_min)
-                          .tempInFahrenheit
-                      }
-                °F`}
-                </p>
-                <p data-feels-like-temperature className="label mb-0">
-                  Feels Like:{" "}
-                  {units === "C"
-                    ? `${citiesData.list[0].main.feels_like}
-                °C`
-                    : `${
-                        convertTemperature(citiesData.list[0].main.feels_like)
-                          .tempInFahrenheit
-                      }
-                °F`}
-                </p>
-              </div>
-              <div className="cities_div_container mt-4">
-                <h5
-                  className="mt-2"
-                  style={{ fontWeight: 700, color: "#0D9BE5" }}
-                >
-                  Forecast in Top 5 Near by Cities for you{" "}
-                  <i
-                    className="fa fa-arrow-right"
-                    style={{ fontSize: "14px" }}
-                    aria-hidden="true"
-                  ></i>
-                </h5>
-                {/* Top 5 near by cities component */}
-                <div className="cities_div_wrapper">
-                  <Top5NearByCities
-                    top5CitiesData={top5CitiesData}
-                    units={units}
-                  />
-                </div>
-                {/* END of Top 5 near by cities component */}
-              </div>
-            </div>
+            <WeatherDashLeftPanel
+              isDarkMode={isDarkMode}
+              setIsDarkMode={setIsDarkMode}
+              units={units}
+              handleUnitChange={handleUnitChange}
+              isMetricActive={isMetricActive}
+              cityInputTerm={cityInputTerm}
+              setCityInputTerm={setCityInputTerm}
+              citiesData={citiesData}
+              top5CitiesData={top5CitiesData}
+              currentTime={currentTime}
+              getWeatherData={getWeatherData}
+            />
 
-            <div className="weather_container_right_panel p-1">
-              <div className="weather_container_bottom_div">
-                <div
-                  className="hourly_updated_weather_title_div"
-                  style={{ color: "#0D9BE5" }}
-                >
-                  <h6 style={{ fontWeight: 700, marginBottom: "5px" }}>
-                    Tomorrow's Forecast
-                  </h6>
-                  <p className="mb-0">
-                    3-hr interval{" "}
-                    <i
-                      className="fa fa-arrow-right"
-                      style={{ fontSize: "14px" }}
-                      aria-hidden="true"
-                    ></i>
-                  </p>
-                </div>
-                {/* Weather forecast component here */}
-                <div className="hourly_updated_weather_div_wrapper">
-                  <WeatherForecast citiesData={citiesData} units={units} />
-                </div>
-                {/* END of weather forecast */}
-              </div>
-              <div className="weather_dynamic_props_div_wrapper mt-4">
-                <div className="weather_dynamic_props_div">
-                  <div className="row mt-2">
-                    <div
-                      className="weather_humidity weather_props_column p-2"
-                      title="Humidity"
-                    >
-                      <h6 data-humidity className="label">
-                        Humidity: <br /> {citiesData.list[0].main.humidity}%{" "}
-                        <br />
-                        {citiesData.list[0].main.humidity < 20 &&
-                        citiesData.list[0].main.humidity < 50
-                          ? "Almost no chance of rain today."
-                          : citiesData.list[0].main.humidity > 50 &&
-                            citiesData.list[0].main.humidity < 70
-                          ? "Slight chances of rain today."
-                          : "It's going to rain today."}
-                      </h6>
-                      <img
-                        src={require("../img/humidity.png")}
-                        alt="Humidity"
-                      />
-                    </div>
-                    <div
-                      className="weather_wind_speed weather_props_column p-2"
-                      title="Wind Speed"
-                    >
-                      {
-                        <>
-                          <h6 data-wind-speed className="label">
-                            Wind Speed: <br />
-                            {units === "C"
-                              ? convertSpeed(citiesData.list[0].wind.speed)
-                                  .speedInMiles
-                              : convertSpeed(citiesData.list[0].wind.speed)
-                                  .speedInKilometers}
-                          </h6>
-                        </>
-                      }
-
-                      <img
-                        src={require("../img/wind_speed.png")}
-                        alt="Wind Speed"
-                      />
-                    </div>
-                    <div
-                      className="weather_wind_direction weather_props_column p-2"
-                      title="Wind Direction"
-                    >
-                      <h6 data-wind-direction className="label">
-                        Wind Direction:
-                        <br /> {windDirection}
-                      </h6>
-                      <img
-                        src={require("../img/wind_direction.png")}
-                        alt="Wind Direction"
-                      />
-                    </div>
-                    <div
-                      className="weather_visibility weather_props_column p-2"
-                      title="Visibility"
-                    >
-                      <h6
-                        data-visibility
-                        className="label"
-                        style={{ fontSize: "12px" }}
-                      >
-                        {visibility && (
-                          <>
-                            <p>
-                              Visibility:{" "}
-                              {units === "C"
-                                ? visibility.visibilityInMiles
-                                : visibility.visibilityInKilometers}
-                            </p>
-                            <span>{visibility.visibilityTextLabel}</span>
-                          </>
-                        )}
-                      </h6>
-                      <img
-                        src={require("../img/visibility.png")}
-                        alt="visibility"
-                      />
-                    </div>
-                    <div
-                      className="weather_sunrise weather_props_column p-2"
-                      title="Sunrise"
-                    >
-                      <h6 data-sunrise className="label">
-                        Sunrise: <br />
-                        {sunriseTime}
-                      </h6>
-                      <img src={require("../img/sunrise.png")} alt="Sunrise" />
-                    </div>
-                    <div
-                      className="weather_sunset weather_props_column p-2"
-                      title="Sunset"
-                    >
-                      <h6 data-sunset className="label">
-                        Sunset:
-                        <br /> {sunsetTime}
-                      </h6>
-                      <img src={require("../img/sunset.png")} alt="Sunset" />
-                    </div>
-                    <div
-                      className="weather_cloudiness weather_props_column p-2"
-                      title="Cloudiness"
-                    >
-                      {cloudiness && (
-                        <>
-                          <h6 data-cloudiness className="label">
-                            {cloudiness.cloudiness} <br />
-                            {cloudiness.cloudinessTextLabel}
-                          </h6>
-                        </>
-                      )}
-                      <img
-                        src={require("../img/cloudiness.png")}
-                        alt="Cloudiness"
-                      />
-                    </div>
-                    <div
-                      className="weather_dew_point weather_props_column p-2"
-                      title="Dew Point"
-                    >
-                      <h6 data-dew-point className="label">
-                        Dew Point:
-                        <br />
-                        {units === "C"
-                          ? `${dewPoint} °C Td`
-                          : `${
-                              convertTemperature(dewPoint).tempInFahrenheit
-                            } °F Td`}
-                      </h6>
-                      <img
-                        src={require("../img/dew_point.png")}
-                        alt="Dew Point"
-                      />
-                    </div>
-                    <div
-                      className="weather_pressure weather_props_column p-2"
-                      title="Pressure"
-                    >
-                      {pressure && (
-                        <>
-                          <h6 data-pressure className="label">
-                            Pressure: <br />
-                            {pressure.pressureInHg} <br />
-                            {pressure.pressureTextLabel}
-                          </h6>
-                        </>
-                      )}
-
-                      <img
-                        src={require("../img/pressure.png")}
-                        alt="Pressure"
-                      />
-                    </div>
-                    <div
-                      className="weather_air_quality_index weather_props_column p-2"
-                      title="Air Quality Index"
-                    >
-                      {airQualityIndex && (
-                        <>
-                          <h6
-                            data-air-quality-index
-                            className="label"
-                            style={{
-                              fontSize:
-                                airQualityIndex.aqiName === undefined
-                                  ? "12px"
-                                  : "inherit",
-                            }}
-                          >
-                            Air Quality Index:{" "}
-                            {airQualityIndex.aqiName === undefined
-                              ? `${airQualityIndex.aqiError} μg/m3`
-                              : `Air Quality: ${airQualityIndex.aqiName}`}
-                          </h6>
-                        </>
-                      )}
-                      <img
-                        src={require("../img/aqi_index.png")}
-                        alt="Air Quality Index"
-                      />
-                    </div>
-                    <div
-                      className="weather_heat_index weather_props_column p-2"
-                      title="Heat Index"
-                    >
-                      {heatIndex && (
-                        <h6 data-heat-index className="label">
-                          Heat Index: <br />
-                          {heatIndex.heatIndex < 0
-                            ? heatIndex.alertText
-                            : heatIndex.heatIndex}
-                        </h6>
-                      )}
-                      <img
-                        src={require("../img/heat_index.png")}
-                        alt="Heat Index"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <WeatherDashRightPanel
+              units={units}
+              citiesData={citiesData}
+              windDirection={windDirection}
+              visibility={visibility}
+              sunriseTime={sunriseTime}
+              sunsetTime={sunsetTime}
+              cloudiness={cloudiness}
+              dewPoint={dewPoint}
+              pressure={pressure}
+              airQualityIndex={airQualityIndex}
+              heatIndex={heatIndex}
+            />
           </div>
         )
       )}
