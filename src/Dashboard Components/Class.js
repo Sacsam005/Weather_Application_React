@@ -39,30 +39,12 @@ export class calculateWeatherFactors {
     return dewPointTemperature;
   };
 
-  getHeatIndex = () => {
-    const c1 = -42.379;
-    const c2 = -2.04901523;
-    const c3 = -10.14333127;
-    const c4 = -0.22475541;
-    const c5 = -0.00683783;
-    const c6 = -0.05481717;
-    const c7 = -0.00122874;
-    const c8 = 0.00085282;
-    const c9 = -0.00000199;
-
-    const T = this.temperature;
-    const RH = this.humidity;
-
-    const heatIndex =
-      c1 +
-      c2 * T +
-      c3 * RH +
-      c4 * T * RH +
-      c5 * T * T +
-      c6 * RH * RH +
-      c7 * T * T * RH +
-      c8 * T * RH * RH +
-      c9 * T * T * RH * RH;
+  getHeatIndex = (temperature, humidity) => {
+    const HI = require("heat-index");
+    const heatIndex = HI.heatIndex({
+      temperature: temperature,
+      humidity: humidity,
+    });
 
     let alertText;
     if (heatIndex < 0) {
@@ -70,15 +52,16 @@ export class calculateWeatherFactors {
     } else if (heatIndex < 32) {
       alertText = "No precautions needed.";
     } else if (heatIndex >= 32 && heatIndex < 40) {
-      alertText = "Use caution.)";
+      alertText = "Higher temperature than normal. Use caution.";
     } else if (heatIndex >= 40 && heatIndex < 54) {
-      alertText = "Take precautions.";
+      alertText = "Higher temperature than normal. Take precautions.";
     } else if (heatIndex >= 54 && heatIndex < 66) {
-      alertText = "Take extra precautions.";
+      alertText = "Higher temperature than normal. Take extra precautions.";
     } else {
-      alertText = "Avoid all outdoor activities.";
+      alertText =
+        "Higher temperature than normal. Avoid all outdoor activities.";
     }
-    return { alertText, heatIndex };
+    return { alertText, heatIndex: heatIndex.toFixed(2) };
   };
 
   // Wind direction to text words

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import "../App.css";
+import WeatherDashLeftPanel from "../Dashboard Components/WeatherDashLeftPanel";
+import WeatherDashRightPanel from "../Dashboard Components/WeatherDashRightPanel";
 import {
   calculateWeatherFactors,
   getLabelsColorChanged,
   calculateAirQualityIndex,
-} from "./Dashboard Components/Class";
-import WeatherDashLeftPanel from "./Dashboard Components/WeatherDashLeftPanel";
-import WeatherDashRightPanel from "./Dashboard Components/WeatherDashRightPanel";
+} from "../Dashboard Components/Class";
+import "../App.css";
 
 const WeatherDashboardWithAllProps = (props) => {
   const [cityInputTerm, setCityInputTerm] = useState("");
@@ -144,8 +144,11 @@ const WeatherDashboardWithAllProps = (props) => {
       setPressure(pressureData);
 
       // Setting heat index
-      const heatIndexData = weatherFactorsData.getHeatIndex();
-      setHeatIndex(heatIndexData);
+      const heatIndexTemp = weatherFactorsData.getHeatIndex(
+        data.list[0].main.temp,
+        data.list[0].main.humidity
+      );
+      setHeatIndex(heatIndexTemp);
 
       // Fetching 5 nearby cities around the city searched by the user
       async function getNearByCities() {

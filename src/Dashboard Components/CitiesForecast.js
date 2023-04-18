@@ -1,7 +1,7 @@
 import React from "react";
-import "../../App.css";
 import { convertTemperature } from "./Class";
 import { WeatherDataLabel } from "../Reusable Components/Button";
+import "../App.css";
 
 const Top5NearByCities = (props) => {
   // Getting top5CitiesData from WeatherDashboardWithAllProps

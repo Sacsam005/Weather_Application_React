@@ -1,7 +1,7 @@
 import React from "react";
-import "../../App.css";
 import { convertTemperature } from "./Class";
 import { WeatherDataLabel } from "../Reusable Components/Button";
+import "../App.css";
 
 const ThreeHourlyWeatherForecast = (props) => {
   // Getting citiesData from WeatherDashboardWithAllProps
@@ -131,6 +131,8 @@ const ThreeHourlyWeatherForecast = (props) => {
                     </div>
                   </div>
                 );
+              } else {
+                return null;
               }
             })}
         </div>

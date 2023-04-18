@@ -73,7 +73,7 @@ h6 {
 .footer_div,
 .developer_note_div {
   display: flex;
-  align-items: start;
+  align-items: flex-start;
   margin: 0 auto;
   padding: 1rem;
   box-shadow: rgba(144, 144, 144, 0.35) 0px 5px 15px;
@@ -152,7 +152,7 @@ input[type="text" i] {
 
 .hourly_updated_weather_div_wrapper {
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
   overflow-x: scroll;
 }

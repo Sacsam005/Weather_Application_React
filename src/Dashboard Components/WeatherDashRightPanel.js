@@ -44,7 +44,7 @@ const WeatherDashRightPanel = (props) => {
                           ? "Slight chances of rain today."
                           : "It's going to rain today."
                       }`}
-                src={require("../../img/humidity.png")}
+                src={require("../Img/humidity.png")}
                 altText="Humidity"
               />
               <WeatherPropertiesDiv
@@ -57,7 +57,7 @@ const WeatherDashRightPanel = (props) => {
                         .speedInKilometers
                     : convertSpeed(citiesData.list[0].wind.speed).speedInMiles
                 }
-                src={require("../../img/wind_speed.png")}
+                src={require("../Img/wind_speed.png")}
                 altText="Wind Speed"
               />
               <WeatherPropertiesDiv
@@ -65,7 +65,7 @@ const WeatherDashRightPanel = (props) => {
                 title="Wind Direction"
                 dataTitle="data-wind-direction"
                 weatherPropData={windDirection}
-                src={require("../../img/wind_direction.png")}
+                src={require("../Img/wind_direction.png")}
                 altText="Wind Direction"
               />
               {visibility && (
@@ -79,7 +79,7 @@ const WeatherDashRightPanel = (props) => {
                       : visibility.visibilityInMiles
                   }
                   weatherPropText={visibility.visibilityTextLabel}
-                  src={require("../../img/visibility.png")}
+                  src={require("../Img/visibility.png")}
                   altText="Visibility"
                   style={{ fontSize: "12px" }}
                 />
@@ -89,7 +89,7 @@ const WeatherDashRightPanel = (props) => {
                 title="Sunrise"
                 dataTitle="data-sunrise"
                 weatherPropData={sunriseTime}
-                src={require("../../img/sunrise.png")}
+                src={require("../Img/sunrise.png")}
                 altText="Sunrise"
               />
               <WeatherPropertiesDiv
@@ -97,7 +97,7 @@ const WeatherDashRightPanel = (props) => {
                 title="Sunset"
                 dataTitle="data-sunset"
                 weatherPropData={sunsetTime}
-                src={require("../../img/sunset.png")}
+                src={require("../Img/sunset.png")}
                 altText="Sunset"
               />
               {cloudiness && (
@@ -107,7 +107,7 @@ const WeatherDashRightPanel = (props) => {
                   dataTitle="data-cloudiness"
                   weatherPropData={cloudiness.cloudiness}
                   weatherPropText={cloudiness.cloudinessTextLabel}
-                  src={require("../../img/cloudiness.png")}
+                  src={require("../Img/cloudiness.png")}
                   altText="Cloudiness"
                 />
               )}
@@ -120,7 +120,7 @@ const WeatherDashRightPanel = (props) => {
                     ? `${dewPoint} °C Td.`
                     : `${convertTemperature(dewPoint).tempInFahrenheit} °F Td.`
                 }
-                src={require("../../img/dew_point.png")}
+                src={require("../Img/dew_point.png")}
                 altText="Dew Point"
               />
               {pressure && (
@@ -130,7 +130,7 @@ const WeatherDashRightPanel = (props) => {
                   dataTitle="data-pressure"
                   weatherPropData={pressure.pressureInHg}
                   weatherPropText={pressure.pressureTextLabel}
-                  src={require("../../img/pressure.png")}
+                  src={require("../Img/pressure.png")}
                   altText="Pressure"
                 />
               )}
@@ -144,7 +144,7 @@ const WeatherDashRightPanel = (props) => {
                       ? `${airQualityIndex.aqiError} μg/m3`
                       : `${airQualityIndex.aqiName}`
                   }
-                  src={require("../../img/aqi_index.png")}
+                  src={require("../Img/aqi_index.png")}
                   altText="Air Quality Index"
                   style={{
                     fontSize:
@@ -157,14 +157,17 @@ const WeatherDashRightPanel = (props) => {
               {heatIndex && (
                 <WeatherPropertiesDiv
                   classNames="weather_heat_index weather_props_column p-2"
-                  title="Heat Index"
+                  title="Heat Index Temperature"
                   dataTitle="data-heat-index"
                   weatherPropData={
-                    heatIndex.heatIndex < 0
-                      ? heatIndex.alertText
-                      : heatIndex.heatIndex
+                    units === "C"
+                      ? `${heatIndex.heatIndex} °C. \n ${heatIndex.alertText}`
+                      : `${
+                          convertTemperature(heatIndex.heatIndex)
+                            .tempInFahrenheit
+                        } °F. \n ${heatIndex.alertText}`
                   }
-                  src={require("../../img/humidity.png")}
+                  src={require("../Img/heat_index.png")}
                   altText="Heat Index"
                 />
               )}
