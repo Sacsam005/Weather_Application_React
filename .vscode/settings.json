@@ -1,0 +1,9 @@
+{
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact"
+  },
+  "emmet.syntaxProfiles": {
+    "javascript": "jsx"
+  },
+  "compile-hero.disable-compile-files-on-did-save-code": true
+}
