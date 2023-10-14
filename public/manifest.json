@@ -1,0 +1,13 @@
+{
+  "short_name": "WeatherCast",
+  "name": "WeatherCast - Find the weather forecast across the globe",
+  "icons": [
+    {
+      "src": "./weather_app_icon.svg",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone"
+}
